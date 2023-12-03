@@ -1,8 +1,16 @@
 package Actions;
 
+import domain.IMatrixActions;
 import domain.Matrix;
+import domain.SquareMatrix;
+import domain.IdentityMatrix;
 
-public class MatrixActions
+import java.lang.NumberFormatException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
+public class MatrixActions implements IMatrixActions
 {
     public Matrix addMatrices(Matrix m1, Matrix m2){
         if(!m1.getDimension().contains(m2.getDimension())){
@@ -102,6 +110,7 @@ public class MatrixActions
             }
         }
 
+        roundMatrix(newMatrix.getMatrix());
         return newMatrix;
     }
 
@@ -146,8 +155,149 @@ public class MatrixActions
                 }
             }
         }
-
+        roundMatrix(newMatrix.getMatrix());
         return newMatrix;
     }
 
+    public Matrix addRowToMatrix(Matrix matrix, Matrix row, int index){
+        if (row.getRows() != 1){
+            throw new IllegalArgumentException("Row matrix isn't row, it have %d rows not 1".formatted(row.getRows()));
+        }
+
+        if (index <= 0 || index > matrix.getRows() || row.getColumns() != matrix.getColumns()) {
+            throw new IllegalArgumentException("Invalid index or row dimensions.");
+        }
+
+        for (int i = 0; i < row.getColumns(); i++) {
+            matrix.getMatrix()[index - 1][i] += row.getElement(1, i + 1);
+        }
+        return matrix;
+    }
+
+    public Matrix permuteColumn(Matrix matrix, int column1, int column2) {
+        Matrix matrixColumn_1 = matrix.getColumn(column1);
+        Matrix matrixColumn_2 = matrix.getColumn(column2);
+
+        for (int j = 0; j < matrix.getRows(); j++) {
+            matrix.getMatrix()[j][column2 - 1] = matrixColumn_1.getMatrix()[j][0];
+        }
+        for (int j = 0; j < matrix.getRows(); j++) {
+            matrix.getMatrix()[j][column1 - 1] = matrixColumn_2.getMatrix()[j][0];
+        }
+        return matrix;
+    }
+
+
+    public SquareMatrix inverse(Matrix matrix) {
+        if (matrix.getRows() != matrix.getColumns())
+        {
+            throw new NumberFormatException("NoN square matrix");
+        }
+
+        int dim = matrix.getRows();
+        double[][] result = new double[dim][dim];
+        double[][] buffer = new double[dim][dim];
+
+
+        for (int i = 0; i < buffer.length; i++)
+        {
+            result[i][i] = 1;
+            System.arraycopy(matrix.getMatrix()[i], 0, buffer[i], 0, buffer[0].length);
+        }
+
+        for (int j = 0; j < dim; j++)
+        {
+            int nonZeroI = j;
+            while (nonZeroI < dim && buffer[nonZeroI][j] == 0)
+            {
+                nonZeroI++;
+            }
+            if (nonZeroI == dim)
+            {
+                throw new NumberFormatException("Inverse matrix does not exist. Determinant is 0");
+            }
+
+            swapRows(buffer, nonZeroI, j);
+            swapRows(result, nonZeroI, j);
+
+            double scalar = buffer[j][j];
+            for (int j2 = 0; j2 < dim; j2++)
+            {
+                result[j][j2] /= scalar;
+                buffer[j][j2] /= scalar;
+            }
+
+            for (int i = j+1; i < dim; i++) {
+                scalar = buffer[i][j];
+                for (int j2 = 0; j2 < dim; j2++) {
+                    result[i][j2] -= result[j][j2] * scalar;
+                    buffer[i][j2] -= buffer[j][j2] * scalar;
+                }
+            }
+        }
+
+        for (int j = dim-1; j > 0; j--)
+        {
+            for (int i = j-1; i >= 0; i--)
+            {
+                double scalar = buffer[i][j];
+                for (int j2 = 0; j2 < dim; j2++)
+                {
+                    result[i][j2] -= result[j][j2] * scalar;
+                }
+            }
+        }
+
+        roundMatrix(result);
+
+        return new SquareMatrix(result);
+    }
+
+    public static void roundMatrix(double[][] matrix) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat df = new DecimalFormat("#.###", symbols);
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = Double.parseDouble(df.format(matrix[i][j]));
+            }
+        }
+    }
+
+
+    private void swapRows(double[][] array, int r1, int r2) {
+        double[] temp = array[r1];
+        array[r1] = array[r2];
+        array[r2] = temp;
+    }
+
+    public Matrix transposeMatrix(Matrix matrix) {
+        Matrix transposedMatrix = new Matrix(matrix.getColumns(), matrix.getRows());
+
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < matrix.getColumns(); j++) {
+                transposedMatrix.setElement(j + 1, i + 1, matrix.getMatrix()[i][j]);
+            }
+        }
+
+        return transposedMatrix;
+    }
+
+    public SquareMatrix powerMatrix(SquareMatrix matrix, int degree) {
+        if (degree < 0) {
+            throw new IllegalArgumentException("Matrix cannot be raised to a negative power.");
+        }
+
+        if (degree == 0) {
+            return new IdentityMatrix(matrix.getRows());
+        }
+
+        SquareMatrix result = new SquareMatrix(matrix);
+
+        for (int i = 1; i < degree; i++) {
+            result = new SquareMatrix(multiplicationMatrices(result, matrix));
+        }
+
+        return result;
+    }
 }

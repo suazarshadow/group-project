@@ -1,11 +1,12 @@
 package controllers;
 
 
-import Actions.MatrixActions;
-import Actions.RelaxationMethod;
+import actions.MatrixActions;
+import actions.RelaxationMethod;
+import actions.ReverseToDouble;
 import clientIp.IpUtils;
-import parser.UserSaveDataStruct;
-import UniversalCalculator.calculator.*;
+import domain.Matrix;
+import domain.SquareMatrix;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,20 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import domain.Matrix;
-import domain.SquareMatrix;
+import parser.UserSaveDataStruct;
+import universalcalculator.*;
 
 import java.util.Arrays;
 
 @RestController
+
 public class MatrixController {
 	private final MatrixActions matrixActions;
-	private final IpUtils ipUtils;
 
 	@Autowired
-	public MatrixController(MatrixActions matrixActions, IpUtils ipUtils) {
+	public MatrixController(MatrixActions matrixActions) {
 		this.matrixActions = matrixActions;
-		this.ipUtils = ipUtils;
 	}
 
 	@PostMapping("/add")
@@ -120,14 +120,14 @@ public class MatrixController {
 	public ResponseEntity<double[][]> powerMatrix(HttpServletRequest httpServletRequest, @RequestBody MatrixPowerRequest matrixPowerRequest) {
 		try {
 			SquareMatrix result = matrixActions.powerMatrix(
-					new SquareMatrix(matrixPowerRequest.getMatrix()),
-					matrixPowerRequest.getDegree()
+					new SquareMatrix(matrixPowerRequest.getM1()),
+					ReverseToDouble.getFirstElement(matrixPowerRequest.getM2())
 			);
-			UserSaveDataStruct userData = new UserSaveDataStruct(IpUtils.getClientIp(httpServletRequest), "power_matrix_degree{%d}".formatted(matrixPowerRequest.getDegree()), new Matrix(matrixPowerRequest.getMatrix()), result);
+			UserSaveDataStruct userData = new UserSaveDataStruct(IpUtils.getClientIp(httpServletRequest), "power_matrix_degree{%d}".formatted(ReverseToDouble.getFirstElement(matrixPowerRequest.getM2())), new Matrix(matrixPowerRequest.getM1()), result);
 			userData.saveToJsonFile("file.json");
 			return ResponseEntity.ok(result.getMatrix());
 		} catch (Exception e) {
-			UserSaveDataStruct userData = new UserSaveDataStruct(IpUtils.getClientIp(httpServletRequest), "power_matrix_degree{%d}".formatted(matrixPowerRequest.getDegree()), new Matrix(matrixPowerRequest.getMatrix()), e.getMessage());
+			UserSaveDataStruct userData = new UserSaveDataStruct(IpUtils.getClientIp(httpServletRequest), "power_matrix_degree{%d}".formatted(ReverseToDouble.getFirstElement(matrixPowerRequest.getM2())), new Matrix(matrixPowerRequest.getM1()), e.getMessage());
 			userData.saveToJsonFile("file.json");
 			return ResponseEntity.badRequest().body(null);
 		}

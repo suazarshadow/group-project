@@ -1,12 +1,10 @@
 package response;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import domain.Matrix;
 import domain.SquareMatrix;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SquareMatrixTest {
     private SquareMatrix SqMat;

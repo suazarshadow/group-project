@@ -1,6 +1,6 @@
 package config;
 
-import Actions.MatrixActions;
+import actions.MatrixActions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

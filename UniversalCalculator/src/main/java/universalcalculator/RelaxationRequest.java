@@ -1,4 +1,4 @@
-package UniversalCalculator.calculator;
+package universalcalculator;
 
 import domain.Matrix;
 import lombok.Getter;

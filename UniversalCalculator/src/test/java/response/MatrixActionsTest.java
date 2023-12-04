@@ -1,11 +1,6 @@
 package response;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import Actions.MatrixActions;
+import actions.MatrixActions;
 import domain.IdentityMatrix;
 import domain.Matrix;
 import domain.SquareMatrix;
@@ -13,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class MatrixActionsTest {

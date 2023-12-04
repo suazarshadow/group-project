@@ -1,4 +1,4 @@
-package UniversalCalculator.calculator;
+package universalcalculator;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MatrixPowerRequest {
-	private double[][] matrix;
-	private int degree;
+	private double[][] m1;
+	private double[][] m2;
 }

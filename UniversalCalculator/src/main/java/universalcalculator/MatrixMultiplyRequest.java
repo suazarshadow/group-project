@@ -1,12 +1,12 @@
-package UniversalCalculator.calculator;
+package universalcalculator;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MatrixAddRequest
-{
+public class MatrixMultiplyRequest {
 	private double[][] m1;
 	private double[][] m2;
 }
+

@@ -2,8 +2,8 @@ package parser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Getter;
 import domain.Matrix;
+import lombok.Getter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,7 +60,7 @@ public class UserSaveDataStruct {
         this.error = "None";
     }
 
-    public UserSaveDataStruct(String ip, String action, Matrix matrixA,String error){
+    public UserSaveDataStruct(String ip, String action, Matrix matrixA, String error){
         this.ip = ip;
         this.action = action;
         this.matrixA = matrixA;
@@ -70,7 +70,7 @@ public class UserSaveDataStruct {
         this.error = error;
     }
 
-    public UserSaveDataStruct(String ip, String action, Matrix matrixA,Matrix matrixB, String error){
+    public UserSaveDataStruct(String ip, String action, Matrix matrixA, Matrix matrixB, String error){
         this.ip = ip;
         this.action = action;
         this.matrixA = matrixA;

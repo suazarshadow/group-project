@@ -9,5 +9,4 @@ Colaborants:
    NazaVl - Vlasenko Nazar 
 
 
-
-   P.S. In last commit done by me is deleting empty test, that is creating error(it`s empty you can check it named UniversalCalculator test in previos commmit) Thank you, for your java course. With best regards Cherniak Sviatoslav
+Quiq fix: connected frontend and backend servers.

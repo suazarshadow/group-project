@@ -28,7 +28,7 @@ const DoubleMatrix = () => {
                 fetchdata(
                   button.link!,
                   button.method!,
-                  JSON.stringify({ matrix1: matrix1!, matrix2: matrix2! })
+                  JSON.stringify({ m1: matrix1!, m2: matrix2! })
                 )
               }
             >

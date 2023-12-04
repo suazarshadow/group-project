@@ -1,11 +1,10 @@
-package Actions;
+package actions;
 
 import domain.IMatrixActions;
+import domain.IdentityMatrix;
 import domain.Matrix;
 import domain.SquareMatrix;
-import domain.IdentityMatrix;
 
-import java.lang.NumberFormatException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;

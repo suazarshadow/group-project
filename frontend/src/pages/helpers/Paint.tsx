@@ -1,5 +1,5 @@
 function Paint(value: number | number[][], columns: number) {
-  const columnTemplate = [...Array(columns)].map(() => "50px").join(" ");
+  const columnTemplate = [...Array(columns)].map(() => "70px").join(" ");
   if (typeof value === "number") {
     return (
       <div style={{ fontSize: "20px", color: "rgb(8, 123, 195)" }}>{value}</div>

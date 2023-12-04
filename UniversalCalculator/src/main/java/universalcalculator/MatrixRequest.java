@@ -1,4 +1,4 @@
-package UniversalCalculator.calculator;
+package universalcalculator;
 
 import lombok.Getter;
 import lombok.Setter;
